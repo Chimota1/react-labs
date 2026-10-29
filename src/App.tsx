@@ -16,6 +16,9 @@ function App() {
   const [tasks, setTasks] = useState(initialTasks)
   const [filter, setFilter] = useState<TaskFilter>('all')
   const filteredTasks = useMemo(() => tasks.filter((task) => filter === 'all' || (filter === 'active' ? !task.completed : task.completed)), [tasks, filter])
+  const emptyMessage = tasks.length === 0
+    ? 'Завдань поки немає. Додайте перше навчальне завдання.'
+    : 'За цим фільтром завдань немає.'
 
   const addTask = (task: Task) => setTasks((currentTasks) => [...currentTasks, task])
   const toggleTask = (id: number) => setTasks((currentTasks) => currentTasks.map((task) => task.id === id ? { ...task, completed: !task.completed } : task))
@@ -27,7 +30,12 @@ function App() {
       <TaskForm onAddTask={addTask} />
       <TaskStats tasks={tasks} />
       <TaskFilters filter={filter} onFilterChange={setFilter} />
-      <TaskList tasks={filteredTasks} onToggleTask={toggleTask} onDeleteTask={deleteTask} />
+      <TaskList
+        tasks={filteredTasks}
+        emptyMessage={emptyMessage}
+        onToggleTask={toggleTask}
+        onDeleteTask={deleteTask}
+      />
     </main>
   )
 }

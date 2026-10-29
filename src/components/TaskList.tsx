@@ -3,12 +3,15 @@ import TaskItem from './TaskItem'
 
 type TaskListProps = {
   tasks: Task[]
+  emptyMessage: string
   onToggleTask: (id: number) => void
   onDeleteTask: (id: number) => void
 }
 
-function TaskList({ tasks, onToggleTask, onDeleteTask }: TaskListProps) {
-  if (tasks.length === 0) return <p className="empty-state">Завдань не знайдено.</p>
+function TaskList({ tasks, emptyMessage, onToggleTask, onDeleteTask }: TaskListProps) {
+  if (tasks.length === 0) {
+    return <p className="empty-state">{emptyMessage}</p>
+  }
 
   return (
     <section className="task-list" aria-label="Навчальні завдання">

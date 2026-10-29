@@ -99,6 +99,11 @@
 }
 
 .empty-state {
+  margin: 0;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  color: var(--text-h);
+  background: var(--card-bg);
   padding: 24px;
   text-align: center;
 }
