@@ -106,9 +106,28 @@
 
 .task-filters {
   display: flex;
+  align-items: end;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
   margin-bottom: 20px;
+}
+
+.task-filters__search {
+  display: grid;
+  flex: 1 1 260px;
+  gap: 4px;
+  color: var(--text-h);
+  font-size: 14px;
+  text-align: left;
+}
+
+.task-filters__search input {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
 }
 
 .task-filters__button--active {

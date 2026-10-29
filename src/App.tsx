@@ -15,7 +15,18 @@ const initialTasks: Task[] = [
 function App() {
   const [tasks, setTasks] = useState(initialTasks)
   const [filter, setFilter] = useState<TaskFilter>('all')
-  const filteredTasks = useMemo(() => tasks.filter((task) => filter === 'all' || (filter === 'active' ? !task.completed : task.completed)), [tasks, filter])
+  const [searchQuery, setSearchQuery] = useState('')
+  const filteredTasks = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLocaleLowerCase()
+
+    return tasks.filter((task) => {
+      const matchesStatus = filter === 'all'
+        || (filter === 'active' ? !task.completed : task.completed)
+      const matchesTitle = task.title.toLocaleLowerCase().includes(normalizedQuery)
+
+      return matchesStatus && matchesTitle
+    })
+  }, [tasks, filter, searchQuery])
   const emptyMessage = tasks.length === 0
     ? 'Завдань поки немає. Додайте перше навчальне завдання.'
     : 'За цим фільтром завдань немає.'
@@ -32,7 +43,12 @@ function App() {
       />
       <TaskForm onAddTask={addTask} />
       <TaskStats tasks={tasks} />
-      <TaskFilters filter={filter} onFilterChange={setFilter} />
+      <TaskFilters
+        filter={filter}
+        searchQuery={searchQuery}
+        onFilterChange={setFilter}
+        onSearchChange={setSearchQuery}
+      />
       <TaskList
         tasks={filteredTasks}
         emptyMessage={emptyMessage}
