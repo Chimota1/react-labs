@@ -1,0 +1,136 @@
+.task-app {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 48px 24px;
+  box-sizing: border-box;
+}
+
+.task-app h1 {
+  margin: 0 0 32px;
+  text-align: center;
+}
+
+.app-header {
+  display: block;
+}
+
+.task-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.task-form input,
+.task-form select,
+.task-form button,
+.task-filters button {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.task-form button,
+.task-filters button {
+  cursor: pointer;
+  color: var(--text-h);
+  background: var(--accent-bg);
+}
+
+.task-form button {
+  grid-column: 1 / -1;
+}
+
+.task-stats {
+  margin: 0 0 16px;
+  color: var(--text-h);
+  text-align: center;
+}
+
+.task-filters {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.task-filters .filter--active {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.task-list {
+  display: grid;
+  gap: 16px;
+}
+
+.empty-state {
+  padding: 24px;
+  text-align: center;
+}
+
+.task-card {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+.task-card__header,
+.task-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.task-card h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.task-card p {
+  margin: 12px 0 20px;
+}
+
+.task-card--completed {
+  opacity: 0.7;
+}
+
+.task-card--completed h2 {
+  text-decoration: line-through;
+}
+
+.task-card__footer {
+  color: var(--text-h);
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .task-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.priority {
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.priority--low {
+  background: #368a5a;
+}
+
+.priority--medium {
+  background: #b47700;
+}
+
+.priority--high {
+  background: #c44747;
+}
