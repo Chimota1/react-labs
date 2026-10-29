@@ -54,9 +54,31 @@
 }
 
 .task-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
   margin: 0 0 16px;
+}
+
+.task-stats__item {
+  display: grid;
+  min-width: 120px;
+  gap: 4px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   color: var(--text-h);
+  background: var(--card-bg);
   text-align: center;
+}
+
+.task-stats__label {
+  font-size: 14px;
+}
+
+.task-stats strong {
+  font-size: 24px;
 }
 
 .task-filters {
@@ -141,6 +163,15 @@
 }
 
 @media (max-width: 600px) {
+  .task-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .task-stats__item {
+    min-width: 0;
+  }
+
   .task-form {
     grid-template-columns: 1fr;
   }
