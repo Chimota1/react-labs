@@ -109,9 +109,35 @@
   font-size: 14px;
 }
 
+.task-card__meta,
+.task-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.task-card__actions button {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-h);
+  background: var(--bg);
+  cursor: pointer;
+  font: inherit;
+}
+
+.task-card__actions button:last-child {
+  color: #c44747;
+}
+
 @media (max-width: 600px) {
   .task-form {
     grid-template-columns: 1fr;
+  }
+
+  .task-card__footer {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 

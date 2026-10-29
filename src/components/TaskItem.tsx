@@ -3,9 +3,10 @@ import type { Task } from '../types'
 type TaskItemProps = {
   task: Task
   onToggleTask: (id: number) => void
+  onDeleteTask: (id: number) => void
 }
 
-function TaskItem({ task, onToggleTask }: TaskItemProps) {
+function TaskItem({ task, onToggleTask, onDeleteTask }: TaskItemProps) {
   return (
     <article className={`task-card${task.completed ? ' task-card--completed' : ''}`}>
       <div className="task-card__header">
@@ -14,11 +15,18 @@ function TaskItem({ task, onToggleTask }: TaskItemProps) {
       </div>
       <p>{task.description}</p>
       <div className="task-card__footer">
-        <span>{task.category}</span>
-        <label>
-          <input type="checkbox" checked={task.completed} onChange={() => onToggleTask(task.id)} />
-          {task.completed ? 'Виконано' : 'Не виконано'}
-        </label>
+        <div className="task-card__meta">
+          <span>{task.category}</span>
+          <span>{task.completed ? 'Виконано' : 'Не виконано'}</span>
+        </div>
+        <div className="task-card__actions">
+          <button type="button" onClick={() => onToggleTask(task.id)}>
+            {task.completed ? 'Відновити' : 'Виконати'}
+          </button>
+          <button type="button" onClick={() => onDeleteTask(task.id)}>
+            Видалити
+          </button>
+        </div>
       </div>
     </article>
   )

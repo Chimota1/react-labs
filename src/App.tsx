@@ -19,6 +19,7 @@ function App() {
 
   const addTask = (task: Task) => setTasks((currentTasks) => [...currentTasks, task])
   const toggleTask = (id: number) => setTasks((currentTasks) => currentTasks.map((task) => task.id === id ? { ...task, completed: !task.completed } : task))
+  const deleteTask = (id: number) => setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id))
 
   return (
     <main className="task-app">
@@ -26,7 +27,7 @@ function App() {
       <TaskForm onAddTask={addTask} />
       <TaskStats tasks={tasks} />
       <TaskFilters filter={filter} onFilterChange={setFilter} />
-      <TaskList tasks={filteredTasks} onToggleTask={toggleTask} />
+      <TaskList tasks={filteredTasks} onToggleTask={toggleTask} onDeleteTask={deleteTask} />
     </main>
   )
 }
