@@ -5,12 +5,24 @@ type TaskFiltersProps = {
   onFilterChange: (filter: TaskFilter) => void
 }
 
+const filterOptions: Array<{ value: TaskFilter; label: string }> = [
+  { value: 'all', label: 'Всі' },
+  { value: 'completed', label: 'Виконані' },
+  { value: 'active', label: 'Не виконані' },
+]
+
 function TaskFilters({ filter, onFilterChange }: TaskFiltersProps) {
   return (
     <div className="task-filters" aria-label="Фільтри завдань">
-      {(['all', 'active', 'completed'] as const).map((value) => (
-        <button key={value} className={filter === value ? 'filter--active' : ''} type="button" onClick={() => onFilterChange(value)}>
-          {value === 'all' ? 'Усі' : value === 'active' ? 'Активні' : 'Виконані'}
+      {filterOptions.map(({ value, label }) => (
+        <button
+          key={value}
+          className={`task-filters__button${filter === value ? ' task-filters__button--active' : ''}`}
+          type="button"
+          aria-pressed={filter === value}
+          onClick={() => onFilterChange(value)}
+        >
+          {label}
         </button>
       ))}
     </div>
