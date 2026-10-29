@@ -21,6 +21,16 @@
   margin-bottom: 20px;
 }
 
+.task-form__field {
+  display: grid;
+  gap: 4px;
+}
+
+.task-form__error {
+  color: #c44747;
+  font-size: 13px;
+}
+
 .task-form input,
 .task-form select,
 .task-form button,

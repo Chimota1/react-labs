@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import './App.css'
+import './App.scss'
 import Header from './components/Header'
 import TaskFilters from './components/TaskFilters'
 import TaskForm from './components/TaskForm'
