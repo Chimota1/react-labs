@@ -3,6 +3,8 @@
   margin: 0 auto;
   padding: 48px 24px;
   box-sizing: border-box;
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 .task-app h1 {
@@ -11,7 +13,28 @@
 }
 
 .app-header {
-  display: block;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.app-header__eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.app-header h1 {
+  margin: 0;
+}
+
+.app-header__subtitle {
+  max-width: 520px;
+  margin: 12px auto 0;
+  color: var(--text);
+  font-size: 16px;
 }
 
 .task-form {

@@ -26,7 +26,10 @@ function App() {
 
   return (
     <main className="task-app">
-      <Header title="Список завдань" />
+      <Header
+        title="Study Planner"
+        subtitle="Плануйте навчання, відстежуйте прогрес і досягайте цілей."
+      />
       <TaskForm onAddTask={addTask} />
       <TaskStats tasks={tasks} />
       <TaskFilters filter={filter} onFilterChange={setFilter} />
