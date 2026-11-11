@@ -1,27 +1,30 @@
-import type { Task } from '../types'
+import { useTaskContext } from '../hooks/useTaskContext'
 import TaskItem from './TaskItem'
+import './TaskList.scss'
 
-type TaskListProps = {
-  tasks: Task[]
-  emptyMessage: string
-  onToggleTask: (id: number) => void
-  onDeleteTask: (id: number) => void
-}
+export function TaskList() {
+  const { tasks, filteredTasks } = useTaskContext()
 
-function TaskList({ tasks, emptyMessage, onToggleTask, onDeleteTask }: TaskListProps) {
   if (tasks.length === 0) {
-    return <p className="empty-state">{emptyMessage}</p>
+    return (
+      <p className="task-list__empty">
+        Завдань поки немає. Додайте перше навчальне завдання.
+      </p>
+    )
+  }
+
+  if (filteredTasks.length === 0) {
+    return (
+      <p className="task-list__empty">
+        За цим фільтром завдань немає.
+      </p>
+    )
   }
 
   return (
     <section className="task-list" aria-label="Навчальні завдання">
-      {tasks.map((task) => (
-        <TaskItem
-          key={task.id}
-          task={task}
-          onToggleTask={onToggleTask}
-          onDeleteTask={onDeleteTask}
-        />
+      {filteredTasks.map((task) => (
+        <TaskItem key={task.id} task={task} />
       ))}
     </section>
   )

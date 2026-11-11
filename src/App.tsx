@@ -1,61 +1,35 @@
-import { useMemo, useState } from 'react'
 import './App.scss'
 import Header from './components/Header'
 import TaskFilters from './components/TaskFilters'
 import TaskForm from './components/TaskForm'
 import TaskList from './components/TaskList'
 import TaskStats from './components/TaskStats'
-import type { Task, TaskFilter } from './types'
+import TaskToolbar from './components/TaskToolbar'
+import Toast from './components/Toast'
+import { TaskProvider } from './context/TaskProvider'
 
-const initialTasks: Task[] = [
-  { id: 1, title: 'React Components', description: 'Опрацювати базові принципи компонентів React', completed: false, priority: 'high', category: 'React' },
-  { id: 2, title: 'TypeScript Exercises', description: 'Виконати практичні вправи', completed: true, priority: 'medium', category: 'TypeScript' },
-]
-
-function App() {
-  const [tasks, setTasks] = useState(initialTasks)
-  const [filter, setFilter] = useState<TaskFilter>('all')
-  const [searchQuery, setSearchQuery] = useState('')
-  const filteredTasks = useMemo(() => {
-    const normalizedQuery = searchQuery.trim().toLocaleLowerCase()
-
-    return tasks.filter((task) => {
-      const matchesStatus = filter === 'all'
-        || (filter === 'active' ? !task.completed : task.completed)
-      const matchesTitle = task.title.toLocaleLowerCase().includes(normalizedQuery)
-
-      return matchesStatus && matchesTitle
-    })
-  }, [tasks, filter, searchQuery])
-  const emptyMessage = tasks.length === 0
-    ? 'Завдань поки немає. Додайте перше навчальне завдання.'
-    : 'За цим фільтром завдань немає.'
-
-  const addTask = (task: Task) => setTasks((currentTasks) => [...currentTasks, task])
-  const toggleTask = (id: number) => setTasks((currentTasks) => currentTasks.map((task) => task.id === id ? { ...task, completed: !task.completed } : task))
-  const deleteTask = (id: number) => setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id))
-
+function StudyPlanner() {
   return (
     <main className="task-app">
       <Header
         title="Study Planner"
         subtitle="Плануйте навчання, відстежуйте прогрес і досягайте цілей."
       />
-      <TaskForm onAddTask={addTask} />
-      <TaskStats tasks={tasks} />
-      <TaskFilters
-        filter={filter}
-        searchQuery={searchQuery}
-        onFilterChange={setFilter}
-        onSearchChange={setSearchQuery}
-      />
-      <TaskList
-        tasks={filteredTasks}
-        emptyMessage={emptyMessage}
-        onToggleTask={toggleTask}
-        onDeleteTask={deleteTask}
-      />
+      <TaskForm />
+      <TaskStats />
+      <TaskFilters />
+      <TaskToolbar />
+      <TaskList />
+      <Toast />
     </main>
+  )
+}
+
+function App() {
+  return (
+    <TaskProvider>
+      <StudyPlanner />
+    </TaskProvider>
   )
 }
 

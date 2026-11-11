@@ -1,27 +1,33 @@
-import type { Task } from '../types'
+import { useTaskContext } from '../hooks/useTaskContext'
+import './TaskStats.scss'
 
-type TaskStatsProps = {
-  tasks: Task[]
-}
+export function TaskStats() {
+  const { tasks } = useTaskContext()
 
-function TaskStats({ tasks }: TaskStatsProps) {
-  const completedCount = tasks.filter((task) => task.completed).length
-  const pendingCount = tasks.length - completedCount
+  // Derived state calculated during render - no useEffect used for derived stats!
+  const activeExistingTasks = tasks.filter((task) => !task.isPendingDelete)
+  const totalCount = activeExistingTasks.length
+  const completedCount = activeExistingTasks.filter((task) => task.completed).length
+  const pendingCount = totalCount - completedCount
 
   return (
     <section className="task-stats" aria-label="Статистика завдань">
-      <p className="task-stats__item">
+      <div className="task-stats__item">
         <span className="task-stats__label">Усього</span>
-        <strong>{tasks.length}</strong>
-      </p>
-      <p className="task-stats__item">
+        <strong className="task-stats__value">{totalCount}</strong>
+      </div>
+      <div className="task-stats__item">
         <span className="task-stats__label">Виконано</span>
-        <strong>{completedCount}</strong>
-      </p>
-      <p className="task-stats__item">
+        <strong className="task-stats__value task-stats__value--completed">
+          {completedCount}
+        </strong>
+      </div>
+      <div className="task-stats__item">
         <span className="task-stats__label">Не виконано</span>
-        <strong>{pendingCount}</strong>
-      </p>
+        <strong className="task-stats__value task-stats__value--pending">
+          {pendingCount}
+        </strong>
+      </div>
     </section>
   )
 }

@@ -1,0 +1,132 @@
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  min-width: 300px;
+  max-width: min(460px, calc(100vw - 48px));
+  border-radius: 10px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: toast-slide-up 0.25s ease-out;
+  background: var(--card-bg, #242531);
+  color: var(--text-h, #ffffff);
+  border: 1px solid var(--border, #3a3b47);
+  backdrop-filter: blur(8px);
+}
+
+.toast--info {
+  border-left: 5px solid #3b82f6;
+}
+
+.toast--success {
+  border-left: 5px solid #10b981;
+}
+
+.toast--warning {
+  border-left: 5px solid #f59e0b;
+}
+
+.toast--error {
+  border-left: 5px solid #ef4444;
+}
+
+.toast__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.toast__message {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-h, #ffffff);
+  word-break: break-word;
+  flex: 1;
+}
+
+.toast__action-btn {
+  background: var(--accent, #a855f7);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.toast__close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text, #9ca3af);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--text-h, #ffffff);
+  }
+}
+
+.toast__progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.toast__progress-bar {
+  height: 100%;
+  background: #f59e0b;
+  width: 100%;
+  transform-origin: left;
+  animation-name: toast-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes toast-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .toast {
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+    min-width: auto;
+  }
+}

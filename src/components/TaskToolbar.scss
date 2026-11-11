@@ -1,0 +1,57 @@
+.task-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  &__button {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text-h);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--accent-bg);
+      border-color: var(--accent);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &--clear {
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.3);
+
+      &:hover:not(:disabled) {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: #ef4444;
+      }
+    }
+
+    &--reset {
+      color: var(--text);
+
+      &:hover {
+        color: var(--text-h);
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    justify-content: stretch;
+
+    &__button {
+      flex: 1;
+      text-align: center;
+      padding: 8px 6px;
+    }
+  }
+}

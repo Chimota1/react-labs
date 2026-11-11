@@ -1,24 +1,16 @@
+import { useTaskContext } from '../hooks/useTaskContext'
 import type { TaskFilter } from '../types'
-
-type TaskFiltersProps = {
-  filter: TaskFilter
-  searchQuery: string
-  onFilterChange: (filter: TaskFilter) => void
-  onSearchChange: (query: string) => void
-}
+import './TaskFilters.scss'
 
 const filterOptions: Array<{ value: TaskFilter; label: string }> = [
   { value: 'all', label: 'Всі' },
-  { value: 'completed', label: 'Виконані' },
   { value: 'active', label: 'Не виконані' },
+  { value: 'completed', label: 'Виконані' },
 ]
 
-function TaskFilters({
-  filter,
-  searchQuery,
-  onFilterChange,
-  onSearchChange,
-}: TaskFiltersProps) {
+export function TaskFilters() {
+  const { filter, searchQuery, setFilter, setSearchQuery } = useTaskContext()
+
   return (
     <div className="task-filters" aria-label="Фільтри завдань">
       <label className="task-filters__search">
@@ -26,22 +18,27 @@ function TaskFilters({
         <input
           type="search"
           value={searchQuery}
-          onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Введіть назву завдання"
+          onChange={(event) => setSearchQuery(event.target.value)}
+          placeholder="Введіть назву для пошуку"
           aria-label="Пошук завдань за назвою"
         />
       </label>
-      {filterOptions.map(({ value, label }) => (
-        <button
-          key={value}
-          className={`task-filters__button${filter === value ? ' task-filters__button--active' : ''}`}
-          type="button"
-          aria-pressed={filter === value}
-          onClick={() => onFilterChange(value)}
-        >
-          {label}
-        </button>
-      ))}
+
+      <div className="task-filters__group" role="group" aria-label="Фільтрація за статусом">
+        {filterOptions.map(({ value, label }) => (
+          <button
+            key={value}
+            className={`task-filters__button${
+              filter === value ? ' task-filters__button--active' : ''
+            }`}
+            type="button"
+            aria-pressed={filter === value}
+            onClick={() => setFilter(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
