@@ -2,32 +2,26 @@ import { useTaskContext } from '../hooks/useTaskContext'
 import './TaskToolbar.scss'
 
 export function TaskToolbar() {
-  const { tasks, clearCompleted, resetTasks } = useTaskContext()
-
-  const completedCount = tasks.filter(
-    (task) => task.completed && !task.isPendingDelete,
-  ).length
+  const { fetchTasks, isLoading, total } = useTaskContext()
 
   return (
-    <div className="task-toolbar" aria-label="Панель керування списком">
-      <button
-        type="button"
-        className="task-toolbar__button task-toolbar__button--clear"
-        disabled={completedCount === 0}
-        onClick={clearCompleted}
-        title="Очистити всі виконані завдання (з можливістю скасування)"
-      >
-        Очистити виконані {completedCount > 0 && `(${completedCount})`}
-      </button>
+    <div className="task-toolbar" aria-label="Панель керування">
+      <div className="task-toolbar__info">
+        <span className="task-toolbar__badge">REST API: DummyJSON</span>
+        <span className="task-toolbar__count">Всього на сервері: {total}</span>
+      </div>
 
-      <button
-        type="button"
-        className="task-toolbar__button task-toolbar__button--reset"
-        onClick={resetTasks}
-        title="Скинути список до початкових демонстраційних даних"
-      >
-        Скинути дані
-      </button>
+      <div className="task-toolbar__actions">
+        <button
+          type="button"
+          className="task-toolbar__button task-toolbar__button--refresh"
+          disabled={isLoading}
+          onClick={fetchTasks}
+          title="Оновити список із REST API"
+        >
+          {isLoading ? 'Оновлення...' : '🔄 Оновити з API'}
+        </button>
+      </div>
     </div>
   )
 }

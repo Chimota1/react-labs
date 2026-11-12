@@ -5,7 +5,7 @@ import type { TaskPriority } from '../types'
 import './TaskForm.scss'
 
 export function TaskForm() {
-  const { addTask, updateTask, editingTask, setEditingTask } = useTaskContext()
+  const { createTask, updateTask, editingTask, setEditingTask } = useTaskContext()
 
   const [title, setTitle] = useState(editingTask?.title ?? '')
   const [description, setDescription] = useState(editingTask?.description ?? '')
@@ -14,8 +14,9 @@ export function TaskForm() {
   )
   const [category, setCategory] = useState(editingTask?.category ?? '')
   const [titleError, setTitleError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Adjusting form state when editingTask changes (React pattern: adjusting state during render)
+  // Adjusting form state when editingTask changes (React pattern)
   const [prevEditingTask, setPrevEditingTask] = useState(editingTask)
   if (editingTask !== prevEditingTask) {
     setPrevEditingTask(editingTask)
@@ -32,7 +33,7 @@ export function TaskForm() {
     setEditingTask(null)
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const trimmedTitle = title.trim()
     if (!trimmedTitle) {
@@ -40,34 +41,43 @@ export function TaskForm() {
       return
     }
 
-    if (isEditing && editingTask) {
-      updateTask(editingTask.id, {
-        title: trimmedTitle,
-        description: description.trim(),
-        priority,
-        category: category.trim(),
-      })
-    } else {
-      addTask({
-        title: trimmedTitle,
-        description: description.trim(),
-        priority,
-        category: category.trim(),
-      })
-      setTitle('')
-      setDescription('')
-      setCategory('')
-      setPriority('medium')
-      setTitleError('')
+    setIsSubmitting(true)
+
+    try {
+      if (isEditing && editingTask) {
+        await updateTask(editingTask.id, {
+          title: trimmedTitle,
+          description: description.trim(),
+          priority,
+          category: category.trim(),
+        })
+      } else {
+        await createTask({
+          title: trimmedTitle,
+          description: description.trim(),
+          priority,
+          category: category.trim(),
+        })
+        setTitle('')
+        setDescription('')
+        setCategory('')
+        setPriority('medium')
+        setTitleError('')
+      }
+    } catch {
+      // Error is handled in context toast
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
   return (
     <form className="task-form" onSubmit={handleSubmit}>
       <label className="task-form__field">
-        <span>Назва завдання</span>
+        <span>Назва завдання (POST / PUT)</span>
         <input
           required
+          disabled={isSubmitting}
           value={title}
           onChange={(event) => {
             setTitle(event.target.value)
@@ -81,8 +91,9 @@ export function TaskForm() {
       </label>
 
       <label className="task-form__field">
-        <span>Опис</span>
+        <span>Опис (клієнтські метадані)</span>
         <input
+          disabled={isSubmitting}
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           placeholder="Короткий опис"
@@ -93,9 +104,10 @@ export function TaskForm() {
       <label className="task-form__field">
         <span>Категорія</span>
         <input
+          disabled={isSubmitting}
           value={category}
           onChange={(event) => setCategory(event.target.value)}
-          placeholder="Наприклад: React, TypeScript"
+          placeholder="Наприклад: React, REST API"
           aria-label="Категорія завдання"
         />
       </label>
@@ -103,6 +115,7 @@ export function TaskForm() {
       <label className="task-form__field">
         <span>Пріоритет</span>
         <select
+          disabled={isSubmitting}
           value={priority}
           onChange={(event) => setPriority(event.target.value as TaskPriority)}
           aria-label="Пріоритет"
@@ -116,15 +129,21 @@ export function TaskForm() {
       <div className="task-form__actions">
         <button
           type="submit"
+          disabled={isSubmitting}
           className={`task-form__button${
             isEditing ? ' task-form__button--edit' : ''
           }`}
         >
-          {isEditing ? 'Зберегти зміни' : 'Додати завдання'}
+          {isSubmitting
+            ? 'Збереження в API...'
+            : isEditing
+              ? 'Зберегти зміни (PUT)'
+              : 'Додати завдання (POST)'}
         </button>
         {isEditing && (
           <button
             type="button"
+            disabled={isSubmitting}
             className="task-form__button task-form__button--cancel"
             onClick={handleCancel}
           >
