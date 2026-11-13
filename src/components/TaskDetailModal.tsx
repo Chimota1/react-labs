@@ -36,7 +36,11 @@ export function TaskDetailModal({ taskId, onClose }: TaskDetailModalProps) {
           return
         }
         if (!isCancelled) {
-          setError(err instanceof Error ? err.message : 'Не вдалося завантажити деталі завдання')
+          setError(
+            err instanceof Error
+              ? err.message
+              : 'Не вдалося завантажити деталі завдання',
+          )
         }
       } finally {
         if (!isCancelled) {
@@ -86,6 +90,14 @@ export function TaskDetailModal({ taskId, onClose }: TaskDetailModalProps) {
             <div className="task-modal__loading">
               <div className="task-modal__spinner" />
               <span>Отримання актуальних даних із сервера...</span>
+              <button
+                type="button"
+                className="task-modal__cancel-btn"
+                onClick={onClose}
+                title="Скасувати запит та закрити модальне вікно (AbortController)"
+              >
+                ⏹ Скасувати GET-запит
+              </button>
             </div>
           )}
 

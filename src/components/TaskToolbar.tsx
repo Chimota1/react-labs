@@ -2,7 +2,7 @@ import { useTaskContext } from '../hooks/useTaskContext'
 import './TaskToolbar.scss'
 
 export function TaskToolbar() {
-  const { fetchTasks, isLoading, total } = useTaskContext()
+  const { fetchTasks, cancelGetRequest, isLoading, total } = useTaskContext()
 
   return (
     <div className="task-toolbar" aria-label="Панель керування">
@@ -12,6 +12,16 @@ export function TaskToolbar() {
       </div>
 
       <div className="task-toolbar__actions">
+        {isLoading && (
+          <button
+            type="button"
+            className="task-toolbar__button task-toolbar__button--cancel"
+            onClick={cancelGetRequest}
+            title="Скасувати поточний GET-запит за допомогою AbortController"
+          >
+            ⏹ Скасувати GET-запит
+          </button>
+        )}
         <button
           type="button"
           className="task-toolbar__button task-toolbar__button--refresh"

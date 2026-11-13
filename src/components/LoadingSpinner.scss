@@ -21,6 +21,28 @@
     font-size: 15px;
     font-weight: 500;
   }
+
+  &__cancel-btn {
+    padding: 8px 16px;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.2);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
 }
 
 @keyframes loading-spin {

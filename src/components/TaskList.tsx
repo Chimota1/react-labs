@@ -17,10 +17,16 @@ export function TaskList() {
     pageSize,
     setPage,
     fetchTasks,
+    cancelGetRequest,
   } = useTaskContext()
 
   if (isLoading && tasks.length === 0) {
-    return <LoadingSpinner message="Завантаження списку завдань із DummyJSON API..." />
+    return (
+      <LoadingSpinner
+        message="Завантаження списку завдань із DummyJSON API..."
+        onCancel={cancelGetRequest}
+      />
+    )
   }
 
   if (error && tasks.length === 0) {
@@ -29,7 +35,12 @@ export function TaskList() {
 
   return (
     <section className="task-list-section" aria-label="Список навчальних завдань">
-      {isLoading && <LoadingSpinner message="Оновлення даних сторінки..." />}
+      {isLoading && (
+        <LoadingSpinner
+          message="Оновлення даних сторінки..."
+          onCancel={cancelGetRequest}
+        />
+      )}
 
       {error && !isLoading && (
         <ErrorMessage message={error} onRetry={fetchTasks} />

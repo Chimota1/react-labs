@@ -27,6 +27,7 @@ export type TaskContextType = {
   openDeleteModal: (task: Task) => void
   closeDeleteModal: () => void
   fetchTasks: () => void
+  cancelGetRequest: () => void
   createTask: (data: {
     title: string
     description?: string

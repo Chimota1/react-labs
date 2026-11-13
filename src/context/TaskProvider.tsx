@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { taskRepository } from '../repositories/taskRepository'
 import type {
@@ -20,6 +20,9 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [refreshIndex, setRefreshIndex] = useState(0)
+
+  // Ref to hold current GET AbortController for manual cancellation
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   // Client / UI state
   const [currentPage, setCurrentPage] = useState(1)
@@ -76,9 +79,20 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     }
   }, [searchQuery])
 
+  // Manual cancellation of in-flight GET request
+  const cancelGetRequest = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+      abortControllerRef.current = null
+      setIsLoading(false)
+      showToast('GET-запит скасовано через AbortController', 'info', 3000)
+    }
+  }, [showToast])
+
   // Fetch tasks with AbortController cancellation on page switch
   useEffect(() => {
     const controller = new AbortController()
+    abortControllerRef.current = controller
     let isCancelled = false
 
     const loadTasks = async () => {
@@ -99,7 +113,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         }
       } catch (err) {
         if (err instanceof Error && err.name === 'AbortError') {
-          // Request was cancelled due to page change or unmount, ignore
+          // Request was cancelled due to page change or manual abort, do not show as error
           return
         }
 
@@ -122,6 +136,9 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     return () => {
       isCancelled = true
       controller.abort()
+      if (abortControllerRef.current === controller) {
+        abortControllerRef.current = null
+      }
     }
   }, [currentPage, refreshIndex])
 
@@ -321,6 +338,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       openDeleteModal,
       closeDeleteModal,
       fetchTasks,
+      cancelGetRequest,
       createTask,
       updateTask,
       toggleTask,
@@ -349,6 +367,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       openDeleteModal,
       closeDeleteModal,
       fetchTasks,
+      cancelGetRequest,
       createTask,
       updateTask,
       toggleTask,
